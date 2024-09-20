@@ -36,7 +36,7 @@ def dice_posterior(sample_draw: List[int],
         if sample_draw[i] != 0:
             dice_one_likelihood = dice_one_likelihood * safe_exponentiate(dice[0].face_probs[i],sample_draw[i])
             dice_two_likelihood = dice_two_likelihood * safe_exponentiate(dice[1].face_probs[i],sample_draw[i])
-    print(dice_one_prior, dice_one_likelihood, dice_two_likelihood)
+
     posterior = (dice_one_likelihood * dice_one_prior)/((dice_one_likelihood *dice_one_prior)+(dice_two_likelihood * (1-dice_one_prior)))
     return posterior
 
@@ -91,7 +91,6 @@ def diceEM(experiment_data: List[NDArray[np.int_]],  # pylint: disable=C0103
         # this is just for visualizing the progress of the algorithm
         logging.debug("Likelihood: %s",
                       bag_of_dice.likelihood(experiment_data))
-        print(experiment_data)
         # YOUR CODE HERE. SET REQUIRED VARIABLES BY CALLING e-step AND m-step.
         # E-step: compute the expected counts given current parameters        
         expected_counts=e_step(experiment_data,bag_of_dice)
@@ -170,7 +169,6 @@ def m_step(expected_counts_by_die: NDArray[np.float_]):
     """
     updated_type_1_frequency = np.sum(expected_counts_by_die[0])
     updated_type_2_frequency = np.sum(expected_counts_by_die[1])
-    print(expected_counts_by_die[1]/np.sum(expected_counts_by_die[1]))
     # REPLACE EACH NONE BELOW WITH YOUR CODE. 
     updated_priors = [updated_type_1_frequency/(updated_type_1_frequency+updated_type_2_frequency),updated_type_2_frequency/(updated_type_1_frequency+updated_type_2_frequency)]
     updated_type_1_face_probs = expected_counts_by_die[0]/np.sum(expected_counts_by_die[0])
